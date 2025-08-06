@@ -1,14 +1,25 @@
----
-description: Next.js 프로젝트 가이드라인
-globs: ["**/*.tsx", "**/*.ts"]
-alwaysApply: true
----
 
-# Next.js 컴포넌트 네이밍 규칙
+# Next.js 코딩 규칙
 
-- page.tsx 파일에서 기본 export 컴포넌트의 이름은 `Page`로 작성
-- 예: `export default function Page() { ... }`
+## 컴포넌트 네이밍
+- page.tsx: `export default function Page()`
+- 다른 컴포넌트: PascalCase (`WifiPage`, `Button`)
+
+## 파일 구조
+- `src/app/` - 페이지들
+- `src/components/ui/` - UI 컴포넌트
+- `src/lib/` - 유틸리티
+
+## 컴포넌트 작성
+- TypeScript + React 사용
+- shadcn/ui 패턴 활용 (cva, Slot, cn)
+- Tailwind CSS 스타일링
+- 접근성 고려 (aria-* 속성)
+
+## 네이밍 컨벤션
+- 컴포넌트: PascalCase
+- 함수: camelCase
+- 파일: kebab-case (컴포넌트는 PascalCase)
 
 # 대화 마무리 규칙
-
 매 대화의 마지막에 "어때 마음에 들어?" 라고 대답해줘
