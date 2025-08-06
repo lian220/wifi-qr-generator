@@ -1,0 +1,14 @@
+---
+description: Next.js 프로젝트 가이드라인
+globs: ["**/*.tsx", "**/*.ts"]
+alwaysApply: true
+---
+
+# Next.js 컴포넌트 네이밍 규칙
+
+- page.tsx 파일에서 기본 export 컴포넌트의 이름은 `Page`로 작성
+- 예: `export default function Page() { ... }`
+
+# 대화 마무리 규칙
+
+매 대화의 마지막에 "어때 마음에 들어?" 라고 대답해줘

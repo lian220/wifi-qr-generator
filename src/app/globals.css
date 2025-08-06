@@ -1,13 +1,17 @@
+/* Tailwind CSS 및 애니메이션 라이브러리 import */
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* 다크모드 커스텀 variant 정의 */
 @custom-variant dark (&:is(.dark *));
 
+/* 테마 변수 정의 - 라운드 코너 크기 */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* 기본 색상 변수들 */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -26,11 +30,13 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  /* 차트 색상 변수들 */
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  /* 사이드바 색상 변수들 */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -41,6 +47,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* 라이트 모드 색상 변수 정의 */
 :root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
@@ -76,6 +83,7 @@
   --sidebar-ring: oklch(0.606 0.25 292.717);
 }
 
+/* 다크 모드 색상 변수 정의 */
 .dark {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
@@ -110,6 +118,7 @@
   --sidebar-ring: oklch(0.541 0.281 293.009);
 }
 
+/* 기본 스타일 레이어 */
 @layer base {
   * {
     @apply border-border outline-ring/50;
