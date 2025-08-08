@@ -1,0 +1,235 @@
+---
+title: Next.js App Router 개발 규칙
+---
+
+# Next.js App Router 개발 규칙
+
+이 규칙은 Next.js App Router를 사용한 현대적인 풀스택 개발을 위한 가이드라인입니다.
+
+## 1. 디렉토리 및 파일 구조
+
+### 디렉토리 명명 규칙
+- kebab-case 사용 (예: `components/auth-form`, `pages/user-profile`)
+- 컴포넌트 파일은 PascalCase 사용 (예: `Button.tsx`, `UserProfile.tsx`)
+
+```typescript
+// 좋은 예시
+src/
+├── components/
+│   ├── auth-form/
+│   │   └── AuthForm.tsx
+│   └── user-profile/
+│       └── UserProfile.tsx
+└── app/
+    ├── dashboard/
+    │   └── page.tsx
+    └── settings/
+        └── page.tsx
+
+// 나쁜 예시
+src/
+├── components/
+│   ├── AuthForm/
+│   │   └── auth-form.tsx
+│   └── UserProfile/
+│       └── user-profile.tsx
+```
+
+## 2. 컴포넌트 내보내기 규칙
+
+### Named Exports 사용
+기본 내보내기 대신 명명된 내보내기를 사용하세요.
+
+```typescript
+// 좋은 예시
+export function Button({ children, ...props }) {
+  return <button {...props}>{children}</button>
+}
+
+export function Card({ title, content }) {
+  return (
+    <div className="card">
+      <h3>{title}</h3>
+      <p>{content}</p>
+    </div>
+  )
+}
+
+// 나쁜 예시
+export default function Button({ children, ...props }) {
+  return <button {...props}>{children}</button>
+}
+```
+
+## 3. Server Components 우선 사용
+
+### Server Components 기본 원칙
+- 대부분의 컴포넌트를 React Server Components (RSC)로 유지
+- 클라이언트 컴포넌트는 상호작용이 필요한 경우에만 사용
+
+```typescript
+// 좋은 예시 - Server Component
+export function UserProfile({ userId }) {
+  const user = await fetchUser(userId) // 서버에서 데이터 가져오기
+  
+  return (
+    <div>
+      <h2>{user.name}</h2>
+      <p>{user.email}</p>
+      <InteractiveButton userId={userId} />
+    </div>
+  )
+}
+
+// 클라이언트 컴포넌트는 작게 유지
+'use client'
+export function InteractiveButton({ userId }) {
+  const [isLiked, setIsLiked] = useState(false)
+  
+  return (
+    <button onClick={() => setIsLiked(!isLiked)}>
+      {isLiked ? '좋아요 취소' : '좋아요'}
+    </button>
+  )
+}
+```
+
+## 4. 클라이언트 컴포넌트 사용 가이드라인
+
+### 'use client' 지시어 최소화
+- 상호작용이 필요한 요소만 클라이언트 컴포넌트로 분리
+- Suspense로 감싸고 fallback UI 제공
+
+```typescript
+// 좋은 예시
+import { Suspense } from 'react'
+
+export function Dashboard() {
+  return (
+    <div>
+      <h1>대시보드</h1>
+      <Suspense fallback={<div>로딩 중...</div>}>
+        <InteractiveChart />
+      </Suspense>
+    </div>
+  )
+}
+
+'use client'
+export function InteractiveChart() {
+  // 클라이언트 로직만 포함
+  return <div>차트 컴포넌트</div>
+}
+```
+
+## 5. 상태 관리 최적화
+
+### useState와 useEffect 최소화
+- 서버 컴포넌트로 데이터 가져오기
+- React Server Actions로 폼 처리
+- URL 검색 매개변수로 공유 가능한 상태 관리
+
+```typescript
+// 좋은 예시 - Server Actions
+export async function createPost(formData: FormData) {
+  'use server'
+  
+  const title = formData.get('title')
+  const content = formData.get('content')
+  
+  await db.posts.create({
+    title,
+    content,
+    createdAt: new Date()
+  })
+  
+  redirect('/posts')
+}
+
+// 좋은 예시 - URL 검색 매개변수
+'use client'
+import { useSearchParams, useRouter } from 'next/navigation'
+
+export function FilterComponent() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  
+  const handleFilter = (filter: string) => {
+    const params = new URLSearchParams(searchParams)
+    params.set('filter', filter)
+    router.push(`?${params.toString()}`)
+  }
+  
+  return (
+    <div>
+      <button onClick={() => handleFilter('all')}>전체</button>
+      <button onClick={() => handleFilter('active')}>활성</button>
+    </div>
+  )
+}
+```
+
+## 6. URL 상태 관리
+
+### nuqs 사용
+URL 검색 매개변수 상태 관리를 위해 `nuqs` 라이브러리 사용
+
+```typescript
+// 좋은 예시
+'use client'
+import { useQueryState } from 'nuqs'
+
+export function SearchFilters() {
+  const [search, setSearch] = useQueryState('search')
+  const [category, setCategory] = useQueryState('category')
+  
+  return (
+    <div>
+      <input
+        value={search || ''}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="검색..."
+      />
+      <select
+        value={category || 'all'}
+        onChange={(e) => setCategory(e.target.value)}
+      >
+        <option value="all">전체</option>
+        <option value="tech">기술</option>
+        <option value="design">디자인</option>
+      </select>
+    </div>
+  )
+}
+```
+
+## 7. App Router 구조
+
+### page.tsx 파일 사용
+라우트 디렉토리에 `page.tsx` 파일을 사용하여 페이지 컴포넌트 정의
+
+```typescript
+// app/dashboard/page.tsx
+export default function DashboardPage() {
+  return (
+    <div>
+      <h1>대시보드</h1>
+      <DashboardContent />
+    </div>
+  )
+}
+
+// app/users/[id]/page.tsx
+export default async function UserPage({ params }: { params: { id: string } }) {
+  const user = await fetchUser(params.id)
+  
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <UserProfile user={user} />
+    </div>
+  )
+}
+```
+
+이러한 규칙을 따르면 성능이 좋고 유지보수가 쉬운 Next.js 애플리케이션을 구축할 수 있습니다.
