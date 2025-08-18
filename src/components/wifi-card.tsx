@@ -28,9 +28,9 @@ const WifiCard = ({
   const qrValue = generateWifiQRString(wifiConfig);
 
   return (
-    <CardContainer backgroundColor={bgColor}>
-      <div className="text-center">
-        <p className="font-bold text-lg text-gray-800">WIFI 접속</p>
+    <CardContainer backgroundColor={bgColor} data-card-ref="true">
+      <div style={{ textAlign: 'center' }}>
+        <p style={{ fontWeight: 'bold', fontSize: '18px', color: '#1f2937' }}>WIFI 접속</p>
       </div>
       
       <QRCode 
@@ -40,13 +40,13 @@ const WifiCard = ({
         level="M"
       />
       
-      <div className="text-center">
-        <p className="font-semibold text-gray-700">
+      <div style={{ textAlign: 'center' }}>
+        <p style={{ fontWeight: '600', color: '#374151' }}>
           {brandName || "브랜드 이름"}
         </p>
       </div>
       
-      <span className="absolute bottom-2 right-3 text-xs text-gray-500 opacity-70">
+      <span style={{ position: 'absolute', bottom: '8px', right: '12px', fontSize: '12px', color: '#6b7280', opacity: 0.7 }}>
         by lian
       </span>
     </CardContainer>

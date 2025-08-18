@@ -39,47 +39,24 @@ export default function WifiPage() {
 
     setIsDownloading(true);
     try {
-      // html2canvas 옵션 수정 - oklch 색상 문제 해결
+      // html2canvas 설정 - 인라인 스타일 사용으로 oklch 색상 문제 해결
       const canvas = await html2canvas(cardRef.current, {
-        useCORS: false,
-        allowTaint: true,
         scale: 2,
         backgroundColor: formData.bgColor,
-        logging: false,
-        removeContainer: true,
-        foreignObjectRendering: false,
-        imageTimeout: 0,
-        onclone: (clonedDoc) => {
-          // 클론된 문서에서 모든 스타일을 인라인으로 변환
-          const elements = clonedDoc.querySelectorAll('*');
-          elements.forEach((element) => {
-            const computedStyle = window.getComputedStyle(element);
-            const styles = [];
-            
-            // 주요 스타일만 인라인으로 적용
-            if (computedStyle.backgroundColor && !computedStyle.backgroundColor.includes('oklch')) {
-              styles.push(`background-color: ${computedStyle.backgroundColor}`);
-            }
-            if (computedStyle.color && !computedStyle.color.includes('oklch')) {
-              styles.push(`color: ${computedStyle.color}`);
-            }
-            if (computedStyle.borderColor && !computedStyle.borderColor.includes('oklch')) {
-              styles.push(`border-color: ${computedStyle.borderColor}`);
-            }
-            
-            if (styles.length > 0) {
-              element.setAttribute('style', styles.join('; '));
-            }
-          });
-        }
+        useCORS: false,
+        allowTaint: false,
+        logging: false
       });
       
+      // 이미지 다운로드
       const link = document.createElement("a");
       link.href = canvas.toDataURL("image/png");
       link.download = `wifi-qr-${formData.brandName || 'card'}.png`;
       link.click();
+      
     } catch (error) {
       console.error("이미지 다운로드 중 오류가 발생했습니다.", error);
+      alert("이미지 다운로드에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsDownloading(false);
     }

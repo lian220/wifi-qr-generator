@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import * as React from "react";
 
 export interface CardContainerProps
@@ -13,11 +12,19 @@ const CardContainer = React.forwardRef<HTMLDivElement, CardContainerProps>(
     return (
       <div
         ref={ref}
-        className={cn(
-          "w-[192px] h-[256px] rounded-lg shadow-lg flex flex-col items-center justify-between p-4 relative",
-          className
-        )}
-        style={{ backgroundColor }}
+        style={{
+          width: '192px',
+          height: '256px',
+          borderRadius: '8px',
+          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '16px',
+          position: 'relative',
+          backgroundColor
+        }}
         {...props}
       >
         {children}

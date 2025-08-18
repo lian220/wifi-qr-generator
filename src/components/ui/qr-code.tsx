@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { QRCodeCanvas } from "qrcode.react";
 import * as React from "react";
 
@@ -26,19 +25,24 @@ const QRCode = React.forwardRef<HTMLDivElement, QRCodeProps>(
       return (
         <div 
           ref={ref}
-          className={cn(
-            "flex items-center justify-center bg-gray-100 border-2 border-dashed border-gray-300 rounded-md",
-            className
-          )}
-          style={{ width: size, height: size }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#f3f4f6',
+            border: '2px dashed #d1d5db',
+            borderRadius: '6px',
+            width: size,
+            height: size
+          }}
         >
-          <span className="text-gray-500 text-sm">QR 코드를 생성할 수 없습니다</span>
+          <span style={{ color: '#6b7280', fontSize: '14px' }}>QR 코드를 생성할 수 없습니다</span>
         </div>
       );
     }
 
     return (
-      <div ref={ref} className={cn("p-2 bg-white rounded-md shadow-inner", className)}>
+      <div ref={ref} style={{ padding: '8px', backgroundColor: '#ffffff', borderRadius: '6px', boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)' }}>
         <QRCodeCanvas
           value={value}
           size={size}
