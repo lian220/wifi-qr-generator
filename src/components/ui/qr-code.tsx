@@ -18,8 +18,7 @@ const QRCode = React.forwardRef<HTMLDivElement, QRCodeProps>(
     size = 128, 
     fgColor = "#333", 
     bgColor = "#ffffff",
-    level = 'M',
-    className 
+    level = 'M'
   }, ref) => {
     if (!value) {
       return (
