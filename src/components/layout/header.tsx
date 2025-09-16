@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Header() {
   return (
     <header className="bg-white shadow-sm border-b">
@@ -9,18 +11,18 @@ export function Header() {
             </h1>
           </div>
           <nav className="flex space-x-4">
-            <a
+            <Link
               href="/"
               className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
             >
               홈
-            </a>
-            <a
+            </Link>
+            <Link
               href="/wifi"
               className="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
             >
               QR 생성
-            </a>
+            </Link>
           </nav>
         </div>
       </div>

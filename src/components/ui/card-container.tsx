@@ -8,7 +8,7 @@ export interface CardContainerProps
 }
 
 const CardContainer = React.forwardRef<HTMLDivElement, CardContainerProps>(
-  ({ children, backgroundColor = "#ffffff", className, ...props }, ref) => {
+  ({ children, backgroundColor = "#ffffff", ...props }, ref) => {
     return (
       <div
         ref={ref}
