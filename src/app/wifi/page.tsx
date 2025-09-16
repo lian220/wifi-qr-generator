@@ -54,7 +54,7 @@ export default function WifiPage() {
       link.download = `wifi-qr-${formData.brandName || 'card'}.png`;
       link.click();
       
-    } catch (error) {
+    } catch {
       alert("이미지 다운로드에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsDownloading(false);
