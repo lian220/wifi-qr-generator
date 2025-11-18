@@ -12,7 +12,7 @@ export interface QRCodeProps {
   className?: string;
 }
 
-const QRCode = React.forwardRef<HTMLDivElement, QRCodeProps>(
+const QRCode = React.memo(React.forwardRef<HTMLDivElement, QRCodeProps>(
   ({ 
     value, 
     size = 128, 
@@ -53,7 +53,7 @@ const QRCode = React.forwardRef<HTMLDivElement, QRCodeProps>(
       </div>
     );
   }
-);
+));
 
 QRCode.displayName = "QRCode";
 
